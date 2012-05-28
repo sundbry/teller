@@ -1,0 +1,30 @@
+lsusb:
+
+Bus 005 Device 002: ID 0471:060c Philips (or NXP) Consumer Infrared Transceiver (HP)
+
+dmesg: 
+
+[106915.021099] usb 5-1: new full-speed USB device number 2 using ohci_hcd
+[106915.178157] usb 5-1: New USB device found, idVendor=0471, idProduct=060c
+[106915.178169] usb 5-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[106915.178176] usb 5-1: Product: BB+ Dongle(e.d)
+[106915.178180] usb 5-1: Manufacturer:
+[106915.178184] usb 5-1: SerialNumber: NDEJ
+[106915.987348] IR NEC protocol handler initialized
+[106915.997826] IR RC5(x) protocol handler initialized
+[106916.002053] Registered IR keymap rc-rc6-mce
+[106916.002362] input: Media Center Ed. eHome Infrared Remote Transceiver (0471:060c) as /devices/pci0000:00/0000:00:13.0/usb5/5-1/5-1:1.0/rc/rc0/input10
+[106916.005198] rc0: Media Center Ed. eHome Infrared Remote Transceiver (0471:060c) as /devices/pci0000:00/0000:00:13.0/usb5/5-1/5-1:1.0/rc/rc0
+[106916.009800] IR RC6 protocol handler initialized
+[106916.044917] IR JVC protocol handler initialized
+[106916.050452] IR Sony protocol handler initialized
+[106916.065481] IR SANYO protocol handler initialized
+[106916.069464] input: MCE IR Keyboard/Mouse (mceusb) as /devices/virtual/input/input11
+[106916.070202] IR MCE Keyboard/mouse protocol handler initialized
+[106916.097142] lirc_dev: IR Remote Control driver registered, major 249
+[106916.099152] rc rc0: lirc_dev: driver ir-lirc-codec (mceusb) registered at minor = 0
+[106916.099158] IR LIRC bridge handler initialized
+[106916.170133] mceusb 5-1:1.0: Registered   BB+ Dongle(e.d) with mce emulator interface version 1
+[106916.170189] mceusb 5-1:1.0: 2 tx ports (0x0 cabled) and 2 rx sensors (0x1 active)
+[106916.170507] usbcore: registered new interface driver mceusb
+

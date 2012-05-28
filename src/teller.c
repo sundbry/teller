@@ -1,23 +1,29 @@
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 #include "teller.h"
 #include "teller-listen.h"
-
-int main(int argc, char *argv[]) {
-	TellerState teller_state;
-
-	teller_init(&teller_state);
-
-	teller_listen_mic(&teller_state);
-	//teller_listen(&teller_state);
-
-	return EXIT_SUCCESS;
-}
+#include "teller-hyp.h"
+#include "teller-action.h"
 
 void teller_init(TellerState *teller_state) {
+	teller_state->logfd = open(teller_state->logPath, O_WRONLY | O_CREAT | O_TRUNC, 0660);
+	if(teller_state->logfd == -1) {
+		fprintf(stderr, "Error opening log file: '%s'\n", 
+			teller_state->logPath);
+		exit(EXIT_FAILURE);
+	}
+
+	dup2(teller_state->logfd, STDERR_FILENO);
+
+	teller_load_actions(&teller_state->actionList);
+
 	teller_state->config = cmd_ln_init(NULL, ps_args(), TRUE,
-				
-			     "-hmm", MODELDIR "/hmm/en_US/hub4wsj_sc_8k",
-			     "-lm", MODELDIR "/lm/en/turtle.DMP",
-			     "-dict", MODELDIR "/lm/en/turtle.dic",
+			     "-hmm", TELLER_HMM,
+			     "-lm", TELLER_LM,
+			     "-dict", TELLER_DICT,
 			     NULL);
 
 	if (teller_state->config == NULL) {
@@ -33,24 +39,8 @@ void teller_init(TellerState *teller_state) {
 }
 
 void teller_deinit(TellerState *teller_state) {
+	printf("Deinitializing...\n");
 	ps_free(teller_state->ps);	
+	teller_unload_actions(&teller_state->actionList);
+	close(teller_state->logfd);
 }
-
-TellerHyp *teller_new_hyp() {
-	TellerHyp *hyp = (TellerHyp *) malloc(sizeof(TellerHyp));
-
-	hyp->str = NULL;
-	hyp->uttid = NULL;
-	hyp->score = 0;
-
-	return hyp;
-}
-
-void teller_delete_hyp(TellerHyp *hyp) {
-	free(hyp);
-}
-
-void teller_parse_hyp(TellerState *teller_state, TellerHyp *hyp) {
-	printf("Recognized: %s\n", hyp->str);
-}
-

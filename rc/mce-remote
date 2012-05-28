@@ -1,0 +1,35 @@
+
+# Please make this file available to others
+# by sending it to <lirc@bartelmus.de>
+#
+# this config file was automatically generated
+# using lirc-0.9.0(devinput) on Tue May 22 22:53:38 2012
+#
+# contributed by 
+#
+# brand:                       mce-remote
+# model no. of remote control: 
+# devices being controlled by this remote:
+#
+
+begin remote
+
+  name  mce-remote
+  bits           64
+  eps            30
+  aeps          100
+
+  one             0     0
+  zero            0     0
+  gap          962
+  toggle_bit_mask 0x0
+
+      begin codes
+          KEY_POWER                0x01C20000010001F4 0x0352000001000546
+          KEY_VOLUMEUP             0x01C20000010001C2 0x0384000001000514
+          KEY_VOLUMEDOWN           0x01900000010001F4 0x0384000001000514
+      end codes
+
+end remote
+
+

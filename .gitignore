@@ -1,6 +1,7 @@
 *.o
 *.swp
 *.swo
+*.log
 lib/sphinxbase-0.7
 lib/pocketsphinx-0.7
 voxforge-en-0.4

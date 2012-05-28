@@ -1,0 +1,91 @@
+Language model created by QuickLM on Sat May 26 22:34:42 EDT 2012
+Copyright (c) 1996-2010 Carnegie Mellon University and Alexander I. Rudnicky
+
+The model is in standard ARPA format, designed by Doug Paul while he was at MITRE.
+
+The code that was used to produce this language model is available in Open Source.
+Please visit http://www.speech.cs.cmu.edu/tools/ for more information
+
+The (fixed) discount mass is 0.5. The backoffs are computed using the ratio method.
+This model based on a corpus of 16 sentences and 12 words
+
+\data\
+ngram 1=12
+ngram 2=24
+ngram 3=32
+
+\1-grams:
+-0.9542 </s> -0.3010
+-0.9542 <s> -0.2499
+-1.5563 CHANNEL -0.2762
+-1.5563 DOWN -0.2499
+-1.8573 MUTE -0.2499
+-1.8573 OFF -0.2499
+-1.8573 ON -0.2499
+-1.2553 TELEVISION -0.2499
+-1.2553 T_V -0.2499
+-1.8573 UNMUTE -0.2499
+-1.5563 UP -0.2499
+-1.5563 VOLUME -0.2762
+
+\2-grams:
+-0.6021 <s> TELEVISION 0.0000
+-0.6021 <s> T_V 0.0000
+-0.6021 CHANNEL DOWN 0.0000
+-0.6021 CHANNEL UP 0.0000
+-0.3010 DOWN </s> -0.3010
+-0.3010 MUTE </s> -0.3010
+-0.3010 OFF </s> -0.3010
+-0.3010 ON </s> -0.3010
+-0.9031 TELEVISION CHANNEL 0.0000
+-1.2041 TELEVISION MUTE 0.0000
+-1.2041 TELEVISION OFF 0.0000
+-1.2041 TELEVISION ON 0.0000
+-1.2041 TELEVISION UNMUTE 0.0000
+-0.9031 TELEVISION VOLUME 0.0000
+-0.9031 T_V CHANNEL 0.0000
+-1.2041 T_V MUTE 0.0000
+-1.2041 T_V OFF 0.0000
+-1.2041 T_V ON 0.0000
+-1.2041 T_V UNMUTE 0.0000
+-0.9031 T_V VOLUME 0.0000
+-0.3010 UNMUTE </s> -0.3010
+-0.3010 UP </s> -0.3010
+-0.6021 VOLUME DOWN 0.0000
+-0.6021 VOLUME UP 0.0000
+
+\3-grams:
+-0.9031 <s> TELEVISION CHANNEL
+-1.2041 <s> TELEVISION MUTE
+-1.2041 <s> TELEVISION OFF
+-1.2041 <s> TELEVISION ON
+-1.2041 <s> TELEVISION UNMUTE
+-0.9031 <s> TELEVISION VOLUME
+-0.9031 <s> T_V CHANNEL
+-1.2041 <s> T_V MUTE
+-1.2041 <s> T_V OFF
+-1.2041 <s> T_V ON
+-1.2041 <s> T_V UNMUTE
+-0.9031 <s> T_V VOLUME
+-0.3010 CHANNEL DOWN </s>
+-0.3010 CHANNEL UP </s>
+-0.6021 TELEVISION CHANNEL DOWN
+-0.6021 TELEVISION CHANNEL UP
+-0.3010 TELEVISION MUTE </s>
+-0.3010 TELEVISION OFF </s>
+-0.3010 TELEVISION ON </s>
+-0.3010 TELEVISION UNMUTE </s>
+-0.6021 TELEVISION VOLUME DOWN
+-0.6021 TELEVISION VOLUME UP
+-0.6021 T_V CHANNEL DOWN
+-0.6021 T_V CHANNEL UP
+-0.3010 T_V MUTE </s>
+-0.3010 T_V OFF </s>
+-0.3010 T_V ON </s>
+-0.3010 T_V UNMUTE </s>
+-0.6021 T_V VOLUME DOWN
+-0.6021 T_V VOLUME UP
+-0.3010 VOLUME DOWN </s>
+-0.3010 VOLUME UP </s>
+
+\end\
