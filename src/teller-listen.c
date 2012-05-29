@@ -40,7 +40,7 @@ void teller_listen_file(TellerState *teller_state, const char *file) {
 		return;
 	}
 
-	aCmd =teller_parse_hyp(teller_state, hyp);
+	aCmd = teller_parse_hyp(teller_state, hyp);
 	if(aCmd != NULL) {
 		teller_action_execute(teller_state, aCmd);
 	}
@@ -181,8 +181,6 @@ void teller_listen_mic(TellerState *teller_state) {
         if(ad_start_rec(ad) < 0) {
             E_FATAL("Failed to start recording\n");
 		}
-
-		break;
     }
 
     cont_ad_close(cont);

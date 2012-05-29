@@ -6,8 +6,10 @@
 #define TELLER_ACTION_FILE KNOWLEDGEDIR "/actions.txt"
 #define TELLER_MAX_ACTION_LENGTH 256
 #define TELLER_MAX_IRCODE_LENGTH 64
+#define TELLER_IGCLIENT_ARG_LENGTH 512
 
 #define BIN_IRSEND "/usr/local/bin/irsend"
+#define BIN_IGCLIENT "/usr/bin/igclient"
 
 typedef struct TellerActionCommand_t {
 	struct TellerActionCommand_t *next;

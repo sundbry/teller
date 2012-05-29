@@ -52,16 +52,12 @@ TellerActionCommand *teller_parse_hyp(TellerState *teller_state, TellerHyp *hyp)
 		while(aCmd == NULL && nextCmd != NULL) {
 			matchStr = strstr(cmdStr, nextCmd->str);
 			// if matched and no junk after
-			printf("matching '%s' vs '%s'\n",
-				nextCmd->str, cmdStr);
 			if(matchStr != NULL && strlen(nextCmd->str) == cmdStrLen) {
 				aCmd = nextCmd;
 			}
 			nextCmd = nextCmd->next;
 		}
 	}
-
-	printf("matched command: '%s'\n", aCmd == NULL ? "NULL" : aCmd->str);
 	
 	return aCmd;
 }

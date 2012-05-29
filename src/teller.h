@@ -5,6 +5,7 @@
 
 #define SAMPLEDIR BASEDIR "/lib/pocketsphinx-0.7/test/data"
 #define KNOWLEDGEDIR BASEDIR "/knowledge"
+#define REMOTE_CTRL_DIR BASEDIR "/rc"
 #define TELLER_HMM MODELDIR "/hmm/en_US/hub4wsj_sc_8k"
 /*
 #define TELLER_LM MODELDIR "/lm/en/turtle.DMP"
@@ -12,7 +13,7 @@
 */
 #define TELLER_LM KNOWLEDGEDIR "/8060.lm"
 #define TELLER_DICT KNOWLEDGEDIR "/8060.dic"
-#define TELLER_DEFAULT_REMOTE "default-remtoe"
+#define TELLER_DEFAULT_REMOTE "default-remote"
 
 typedef struct TellerActionCommand_t TellerActionCommand;
 

@@ -58,13 +58,32 @@ void teller_unload_actions(TellerActionCommand **head) {
 }
 
 void teller_action_execute(TellerState *teller_state, const TellerActionCommand *aCmd) {
-	int status, pid = fork();
+	char arg[TELLER_IGCLIENT_ARG_LENGTH];
+	int status, pid;
+	FILE *test;
+
+	snprintf(arg, TELLER_IGCLIENT_ARG_LENGTH, "%s/%s/%s",
+		REMOTE_CTRL_DIR, teller_state->remoteName, aCmd->irCode); 	
+
+	test = fopen(arg, "r");
+	if(test == NULL) {
+		fprintf(stderr, "Remote signal file not found: '%s'\n",
+			arg);
+	}
+	else {
+		fclose(test);
+	}
+
+	snprintf(arg, TELLER_IGCLIENT_ARG_LENGTH, "--send=%s/%s/%s",
+		REMOTE_CTRL_DIR, teller_state->remoteName, aCmd->irCode); 	
+	
+	pid = fork();
 
 	if(pid == 0) {
-		printf("exec %s %s %s %s\n",
-			BIN_IRSEND, "SEND_ONCE", teller_state->remoteName, aCmd->irCode);
-		//execlp(BIN_IRSEND, "SEND_ONCE", teller_state->remoteName, aCmd->irCode, (char *) NULL);
-		exit(EXIT_SUCCESS);
+		printf("exec %s %s\n", BIN_IGCLIENT, arg);
+		fflush(stdout);
+		execl(BIN_IGCLIENT, BIN_IGCLIENT, arg, (char *) NULL);
+		exit(EXIT_FAILURE);
 	}
 	else {
 		if(pid == -1) {
@@ -75,6 +94,7 @@ void teller_action_execute(TellerState *teller_state, const TellerActionCommand 
 			waitpid(pid, &status, 0);
 		}
 		while(!WIFEXITED(status));
+		printf("exit status: %d\n", WEXITSTATUS(status));
 	}
 }
 
