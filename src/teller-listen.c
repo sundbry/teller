@@ -15,7 +15,7 @@ void teller_listen_file(TellerState *teller_state, const char *file) {
 	FILE *fh;
 	int samples;
 	TellerHyp *hyp = teller_new_hyp();
-	TellerActionCommand *aCmd;
+	TellerAction *act;
 
 	// SAMPLEDIR "/goforward.raw"
 	fh = fopen(file, "rb");
@@ -40,9 +40,9 @@ void teller_listen_file(TellerState *teller_state, const char *file) {
 		return;
 	}
 
-	aCmd = teller_parse_hyp(teller_state, hyp);
-	if(aCmd != NULL) {
-		teller_action_execute(teller_state, aCmd);
+	act = teller_parse_hyp(teller_state, hyp);
+	if(act != NULL) {
+		teller_action_queue(act);
 	}
 	teller_delete_hyp(hyp);
 }
@@ -52,7 +52,7 @@ void teller_listen_mic(TellerState *teller_state) {
     int16 adbuf[4096]; int32 k, ts, rem;
     cont_ad_t *cont;
 	TellerHyp *hyp;
-	TellerActionCommand *aCmd;
+	TellerAction *act;
 
 	const char *deviceName = cmd_ln_str_r(teller_state->config, "-adcdev");
 	int sampRate = (int) cmd_ln_float32_r(teller_state->config, "-samprate");
@@ -143,8 +143,8 @@ void teller_listen_mic(TellerState *teller_state) {
         while (ad_read(ad, adbuf, 4096) >= 0);
         cont_ad_reset(cont);
 
-        printf("Stopped listening, please wait...\n");
-        fflush(stdout);
+        //printf("Stopped listening, please wait...\n");
+        //fflush(stdout);
         /* Finish decoding, obtain and print result */
         ps_end_utt(teller_state->ps);
 
@@ -156,9 +156,9 @@ void teller_listen_mic(TellerState *teller_state) {
 			return;
 		}
 
-		aCmd = teller_parse_hyp(teller_state, hyp);
-		if(aCmd != NULL) {
-			teller_action_execute(teller_state, aCmd);
+		act = teller_parse_hyp(teller_state, hyp);
+		if(act != NULL) {
+			teller_action_queue(act);
 		}
 		teller_delete_hyp(hyp);
 

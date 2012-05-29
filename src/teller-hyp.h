@@ -13,6 +13,6 @@ typedef struct TellerHyp_t {
 
 TellerHyp *teller_new_hyp();
 void teller_delete_hyp(TellerHyp *hyp);
-TellerActionCommand *teller_parse_hyp(TellerState *teller_state, TellerHyp *hyp);
+TellerAction *teller_parse_hyp(TellerState *teller_state, TellerHyp *hyp);
 
 #endif

@@ -1,8 +1,9 @@
-power.sigout	ON
-power.sigout	OFF
-mute.sigout	MUTE
-mute.sigout	UNMUTE
-channelup.sigout	CHANNEL UP
-channeldown.sigout	CHANNEL DOWN
-volumeup.sigout	VOLUME UP
-volumedown.sigout	VOLUME DOWN
+SIGNAL FILE	COUNTABLE	COMMAND (tab separated)
+power.sigout	0	ON
+power.sigout	0	OFF
+mute.sigout	0	MUTE
+mute.sigout	0	UNMUTE
+channelup.sigout	1	CHANNEL UP
+channeldown.sigout	1	CHANNEL DOWN
+volumeup.sigout	1	VOLUME UP
+volumedown.sigout	1	VOLUME DOWN

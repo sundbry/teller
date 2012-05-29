@@ -11,8 +11,8 @@
 #define TELLER_LM MODELDIR "/lm/en/turtle.DMP"
 #define TELLER_DICT MODELDIR "/lm/en/turtle.dic"
 */
-#define TELLER_LM KNOWLEDGEDIR "/8060.lm"
-#define TELLER_DICT KNOWLEDGEDIR "/8060.dic"
+#define TELLER_LM KNOWLEDGEDIR "/3059.lm"
+#define TELLER_DICT KNOWLEDGEDIR "/3059.dic"
 #define TELLER_DEFAULT_REMOTE "default-remote"
 
 typedef struct TellerActionCommand_t TellerActionCommand;

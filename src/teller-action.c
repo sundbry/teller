@@ -9,14 +9,21 @@
 #include "teller.h"
 #include "teller-action.h"
 
-void teller_load_actions(TellerActionCommand **head) {
+static TellerState *s_teller_state = NULL;
+
+void teller_load_actions(TellerState *teller_state) {
 	FILE *actionFile = fopen(TELLER_ACTION_FILE, "r");
 	char *line = alloca(TELLER_MAX_ACTION_LENGTH), *buf;
 	TellerActionCommand *cmd, *tail;
 	int len;
 
-	*head = NULL;
+	s_teller_state = teller_state;
+
+	teller_state->actionList = NULL;
 	tail = NULL;
+
+	// skip first line
+	fgets(line, TELLER_MAX_ACTION_LENGTH, actionFile);
 	
 	while(fgets(line, TELLER_MAX_ACTION_LENGTH, actionFile) != NULL) {
 		len = strlen(line);
@@ -28,11 +35,15 @@ void teller_load_actions(TellerActionCommand **head) {
 		cmd->next = NULL;
 		buf = strtok(line, "\t");
 		strcpy(cmd->irCode, buf);
+
+		buf = strtok(NULL, "\t");
+		cmd->countable = (*buf == '1');
+
 		buf = strtok(NULL, "\t");
 		strcpy(cmd->str, buf);
 
 		if(tail == NULL) {
-			*head = cmd;	
+			teller_state->actionList = cmd;	
 		}
 		else {
 			tail->next = cmd;
@@ -44,8 +55,8 @@ void teller_load_actions(TellerActionCommand **head) {
 	fclose(actionFile);
 }
 
-void teller_unload_actions(TellerActionCommand **head) {
-	TellerActionCommand *cmd, *next = *head;
+void teller_unload_actions(TellerState *teller_state) {
+	TellerActionCommand *cmd, *next = teller_state->actionList;
 
 	while(next != NULL) {
 		cmd = next;
@@ -54,16 +65,22 @@ void teller_unload_actions(TellerActionCommand **head) {
 		free(cmd);
 	}
 
-	*head = NULL;
+	teller_state->actionList = NULL;
+
+	s_teller_state= NULL;
 }
 
-void teller_action_execute(TellerState *teller_state, const TellerActionCommand *aCmd) {
+void teller_action_queue(TellerAction *act) {
+	teller_action_execute(s_teller_state, act);
+}
+
+void teller_action_execute(TellerState *teller_state, TellerAction *act) {
 	char arg[TELLER_IGCLIENT_ARG_LENGTH];
-	int status, pid;
+	int status, pid, count;
 	FILE *test;
 
 	snprintf(arg, TELLER_IGCLIENT_ARG_LENGTH, "%s/%s/%s",
-		REMOTE_CTRL_DIR, teller_state->remoteName, aCmd->irCode); 	
+		REMOTE_CTRL_DIR, teller_state->remoteName, act->cmd->irCode); 	
 
 	test = fopen(arg, "r");
 	if(test == NULL) {
@@ -75,26 +92,47 @@ void teller_action_execute(TellerState *teller_state, const TellerActionCommand 
 	}
 
 	snprintf(arg, TELLER_IGCLIENT_ARG_LENGTH, "--send=%s/%s/%s",
-		REMOTE_CTRL_DIR, teller_state->remoteName, aCmd->irCode); 	
-	
-	pid = fork();
+		REMOTE_CTRL_DIR, teller_state->remoteName, act->cmd->irCode); 	
 
-	if(pid == 0) {
-		printf("exec %s %s\n", BIN_IGCLIENT, arg);
-		fflush(stdout);
-		execl(BIN_IGCLIENT, BIN_IGCLIENT, arg, (char *) NULL);
-		exit(EXIT_FAILURE);
-	}
-	else {
-		if(pid == -1) {
-			perror("teller_action_execute fork");	
-			return;
+	count = act->count;
+
+	while(count > 0) {
+		pid = fork();
+
+		if(pid == 0) {
+			printf("exec %s %s\n", BIN_IGCLIENT, arg);
+			fflush(stdout);
+			execl(BIN_IGCLIENT, BIN_IGCLIENT, arg, (char *) NULL);
+			exit(EXIT_FAILURE);
 		}
-		do {
-			waitpid(pid, &status, 0);
+		else {
+			if(pid == -1) {
+				perror("teller_action_execute fork");	
+				return;
+			}
+			do {
+				waitpid(pid, &status, 0);
+			}
+			while(!WIFEXITED(status));
+			printf("exit status: %d\n", WEXITSTATUS(status));
+			count--;
+			if(count > 0) {
+				usleep(TELLER_MIN_IR_INTERVAL);
+			}
 		}
-		while(!WIFEXITED(status));
-		printf("exit status: %d\n", WEXITSTATUS(status));
 	}
+
+	teller_delete_action(act);
 }
 
+TellerAction *teller_new_action(TellerActionCommand *aCmd) {
+	TellerAction *act = (TellerAction *) malloc(sizeof(TellerAction));
+	act->cmd = aCmd;
+	act->count = 1;
+
+	return act;
+}
+
+void teller_delete_action(TellerAction *act) {
+	free(act);
+}

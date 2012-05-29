@@ -18,7 +18,7 @@ void teller_init(TellerState *teller_state) {
 
 	dup2(teller_state->logfd, STDERR_FILENO);
 
-	teller_load_actions(&teller_state->actionList);
+	teller_load_actions(teller_state);
 
 	teller_state->config = cmd_ln_init(NULL, ps_args(), TRUE,
 			     "-hmm", TELLER_HMM,
@@ -41,6 +41,6 @@ void teller_init(TellerState *teller_state) {
 void teller_deinit(TellerState *teller_state) {
 	printf("Deinitializing...\n");
 	ps_free(teller_state->ps);	
-	teller_unload_actions(&teller_state->actionList);
+	teller_unload_actions(teller_state);
 	close(teller_state->logfd);
 }
