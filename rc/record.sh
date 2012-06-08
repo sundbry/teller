@@ -1,3 +1,20 @@
 #!/bin/bash
-igclient --receiver-on --sleep 5 > $1/$2.sigin
-./inout.pl $1/$2
+
+recordButton() {
+	echo "Press the $1 button"
+	igclient --receiver-on --sleep 5 > $remote/$1.sigin
+	./inout.pl $remote/$1
+}
+
+remote=$1
+
+rm -rf $remote
+mkdir $remote
+
+recordButton "power"
+recordButton "mute"
+recordButton "volumeup"
+recordButton "volumedown"
+recordButton "channelup"
+recordButton "channeldown"
+
